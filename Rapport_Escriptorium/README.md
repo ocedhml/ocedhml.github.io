@@ -18,3 +18,5 @@ Description du document source :
 - **Nombre de pages** : 101 pages  
 - **Institution de conservation** : Bibliothèque nationale de France (BnF)  
 - **Source de la numérisation** : Gallica (BnF)
+
+Les zones de ségmentation (titres, paragraphes, élément décoratifs) sont visibles par des espaces colorés dans l'interface eScriptorium (segmentation). Le type des zones n’est pas affiché directement sur l’image, mais il est bien défini dans les métadonnées de chaque région et visible lors de la sélection individuelle des zones.
