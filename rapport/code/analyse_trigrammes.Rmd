@@ -1,0 +1,224 @@
+---
+title: "Devoir Flaubert"
+output: html_document
+date: "2026-01-28"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r install-packages, echo=TRUE}
+
+if(!require(stylo)) install.packages("stylo", dependencies=TRUE)
+if(!require(ggplot2)) install.packages("ggplot2")
+if(!require(ggdendro)) install.packages("ggdendro")
+
+library(stylo)
+library(ggplot2)
+library(ggdendro)
+```
+
+```{r diagnostic-stylo, echo=TRUE}
+library(stylo)
+
+files <- list.files(pattern = "\\.txt$")
+
+for (f in files) {
+  cat("➡️", f, "\n")
+  txt <- readLines(f, warn = FALSE)
+  cat("   caractères :", nchar(paste(txt, collapse="")), "\n\n")
+}
+```
+```{r setup, echo=TRUE}
+if (!require(quanteda)) install.packages("quanteda")
+if (!require(readtext)) install.packages("readtext")
+if (!require(ggdendro)) install.packages("ggdendro")
+
+library(quanteda)
+library(readtext)
+library(ggdendro)
+```
+```{r load-corpus, echo=TRUE}
+setwd("C:/Projet_Stylo/CorpusFLAUBERT/TEXTES")
+
+texts <- readtext("*.txt")
+texts
+```
+
+```{r filter-corpus, echo=TRUE}
+files <- list.files(pattern="\\.txt$", full.names = TRUE)
+
+usable_chars <- sapply(files, function(f) {
+  x <- tryCatch(readLines(f, warn = FALSE, encoding = "UTF-8"), error = function(e) "")
+  txt <- paste(x, collapse = " ")
+  nchar(gsub("[^[:alpha:]]", "", txt))
+})
+
+dir.create("TEXTES_OK", showWarnings = FALSE)
+
+keep <- usable_chars >= 500
+
+file.copy(files[keep], "TEXTES_OK", overwrite = TRUE)
+
+cat("Fichiers gardés :", sum(keep), "\n")
+cat("Fichiers écartés :", sum(!keep), "\n")
+
+basename(files[!keep])
+```
+```{r check-where, echo=TRUE}
+getwd()
+list.files()
+list.files(pattern="txt", ignore.case = TRUE)
+```
+```{r make-textes-ok, echo=TRUE}
+
+files <- list.files(pattern = "\\.txt$", full.names = TRUE)
+
+read_robust <- function(f) {
+  x <- tryCatch(readLines(f, warn = FALSE, encoding = "UTF-8"), error = function(e) NULL)
+  if (is.null(x)) x <- tryCatch(readLines(f, warn = FALSE, encoding = "Latin1"), error = function(e) character(0))
+  paste(x, collapse = " ")
+}
+
+usable_letters <- sapply(files, function(f) {
+  txt <- read_robust(f)
+  nchar(gsub("[^[:alpha:]]", "", txt))
+})
+
+keep <- usable_letters >= 2000
+
+dir.create("TEXTES_OK", showWarnings = FALSE)
+
+file.copy(files[keep], "TEXTES_OK", overwrite = TRUE)
+
+cat("Fichiers gardés :", sum(keep), "\n")
+cat("Fichiers écartés :", sum(!keep), "\n")
+
+
+basename(files[!keep])
+```
+```{r where-am-i-really, echo=TRUE}
+getwd()
+list.files(pattern="\\.txt$", ignore.case = TRUE)
+```
+```{r find-real-text-folder, echo=TRUE}
+root <- "C:/Projet_Stylo"
+
+all_txt <- list.files(root, pattern="\\.txt$", recursive=TRUE, full.names=TRUE, ignore.case=TRUE)
+
+
+tbl <- sort(table(dirname(all_txt)), decreasing=TRUE)
+
+head(tbl, 15)
+```
+```{r build-textes-ok, echo=TRUE}
+corpus_path <- "C:/Projet_Stylo/CorpusFLAUBERT/TEXTES"
+
+files <- list.files(corpus_path, pattern="\\.txt$", full.names=TRUE, ignore.case=TRUE)
+length(files)
+
+files <- files[!grepl("stylo_config|wordlist|table_with_frequencies", basename(files), ignore.case=TRUE)]
+
+read_robust <- function(f) {
+  x <- tryCatch(readLines(f, warn=FALSE, encoding="UTF-8"), error=function(e) NULL)
+  if (is.null(x)) x <- tryCatch(readLines(f, warn=FALSE, encoding="Latin1"), error=function(e) character(0))
+  paste(x, collapse=" ")
+}
+
+usable_letters <- sapply(files, function(f) {
+  txt <- read_robust(f)
+  nchar(gsub("[^[:alpha:]]", "", txt))
+})
+
+keep <- usable_letters >= 2000
+
+out_dir <- file.path(corpus_path, "TEXTES_OK")
+dir.create(out_dir, showWarnings = FALSE)
+
+file.copy(files[keep], out_dir, overwrite = TRUE)
+
+cat("Fichiers trouvés :", length(files), "\n")
+cat("Fichiers gardés :", sum(keep), "\n")
+cat("Fichiers écartés :", sum(!keep), "\n")
+basename(files[!keep])[1:20]
+```
+
+```{r stylo-trigrams-capture, echo=TRUE}
+library(stylo)
+
+res_or_err <- try(
+  stylo(
+    corpus.dir = "C:/Projet_Stylo/CorpusFLAUBERT/TEXTES/TEXTES_OK",
+    analysis.type = "Delta",
+    ngram.size = 3,
+    words.into.features = FALSE,
+    sampling = "no.sampling",
+    mfw.min = 2000,
+    mfw.max = 2000,
+    gui = FALSE
+  ),
+  silent = TRUE
+)
+
+class(res_or_err)
+```
+```{r read-freq-robust, echo=TRUE}
+freq_candidates <- c(
+  "C:/Projet_Stylo/CorpusFLAUBERT/TEXTES/TEXTES_OK/table_with_frequencies.txt",
+  "C:/Projet_Stylo/table_with_frequencies.txt"
+)
+
+freq_candidates <- freq_candidates[file.exists(freq_candidates)]
+freq_candidates
+
+read_try <- function(path, sep) {
+  tryCatch(
+    read.table(path, header = TRUE, row.names = 1, sep = sep, check.names = FALSE, quote="\"", comment.char=""),
+    error = function(e) NULL
+  )
+}
+
+seps <- c("\t", ";", ",", " ", "")
+
+best <- NULL
+best_info <- c(path=NA, sep=NA, nrow=NA, ncol=NA)
+
+for (p in freq_candidates) {
+  for (s in seps) {
+    x <- read_try(p, s)
+    if (!is.null(x)) {
+      if (ncol(x) > 0 && nrow(x) > 0) {
+        best <- x
+        best_info <- c(path=p, sep=s, nrow=nrow(x), ncol=ncol(x))
+        break
+      }
+    }
+  }
+  if (!is.null(best)) break
+}
+
+best_info
+freq <- best
+dim(freq)
+```
+```{r dendro-final, echo=TRUE}
+
+mat <- t(as.matrix(freq))
+mode(mat) <- "numeric"
+
+col_var <- apply(mat, 2, var)
+mat <- mat[, is.finite(col_var) & col_var > 0, drop = FALSE]
+mat <- mat[rowSums(mat) > 0, , drop = FALSE]
+
+if(!require(proxy)) install.packages("proxy")
+library(proxy)
+dist_matrix <- proxy::dist(mat, method = "cosine")
+
+hc <- hclust(as.dist(dist_matrix), method = "ward.D2")
+
+if(!require(ggdendro)) install.packages("ggdendro")
+library(ggdendro)
+ggdendrogram(as.dendrogram(hc))
+```
