@@ -1,1 +1,71 @@
+\documentclass[12pt]{article}
 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{caption}
+
+\geometry{margin=2.5cm}
+\setstretch{1.2}
+
+\title{Transcription numérique\\
+\large \textit{L’Odyssée d’Homère, ou Les avantures d’Ulysse en vers burlesques}}
+\author{Océane Duhamel}
+\date{Semestre d'automne 2025-2026, Université de Genève}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Ce travail s’inscrit dans le cadre d’un projet d’initiation aux humanités numériques, ayant pour objectif principal de se familiariser avec la transcription et l’annotation de documents anciens à partir de sources numérisées. Il s’agit ici de comprendre comment un texte imprimé ancien peut être transformé en données exploitables, tout en conservant autant que possible sa structure, son organisation et ses particularités matérielles.
+
+Le projet repose sur l’utilisation de la plateforme \textit{eScriptorium}, qui permet de segmenter les pages, de transcrire le texte et d’associer chaque transcription à des zones précises de l’image.
+
+L’ouvrage choisi, \textit{L’Odyssée d’Homère, ou Les avantures d’Ulysse en vers burlesques}, attribué à Hugues de Picou, a été sélectionné à la fois par intérêt personnel et pour la richesse de ses formes textuelles, son caractère burlesque et sa mise en page variée en font un corpus intéressant pour une transcription.
+
+\section{Présentation de l’ouvrage et du corpus}
+
+L’ouvrage étudié est intitulé \textit{L’Odyssée d’Homère, ou Les avantures d’Ulysse en vers burlesques}. Il s’agit d’une réécriture parodique de l’épopée homérique, publiée au XVII\textsuperscript{e} siècle et attribuée à Hugues de Picou. Cette œuvre détourne un texte fondateur de la littérature antique en adoptant un ton satirique et burlesque, caractéristique de certaines pratiques littéraires de l’époque.
+
+Le corpus utilisé pour ce travail est constitué de plusieurs pages issues d’un exemplaire numérisé conservé par la Bibliothèque nationale de France. Les pages sélectionnées comprennent la page de titre, des épîtres adressées à des figures nobles, ainsi que des pages de texte en vers. Ces documents présentent une grande diversité typographique : usage des capitales, variations de corps de texte, orthographe ancienne...
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Manuscrit p1.png}
+    \caption{Page de titre de \textit{L’Odyssée d’Homère, ou Les aventures d’Ulysse en vers burlesques}}
+    \label{fig:placeholder}
+\end{figure}
+
+Cette page de titre illustre bien les enjeux de la transcription : hiérarchisation visuelle de l’information, présence d’éléments décoratifs et importance de la mise en page dans la compréhension du document.
+
+\section{Choix de l’œuvre}
+
+Le choix de cet ouvrage repose avant tout sur un intérêt personnel pour cette réécriture burlesque de l’\textit{Odyssée}.
+D’un point de vue méthodologique, cet ouvrage se prête bien à une approche des humanités numériques, sa langue, son orthographe ancienne et sa mise en page variée permet de mettre en place les outils vu en cours tout en permettant de réfléchir à la manière dont un texte ancien est structuré et transmis.
+
+\section{Méthodologie de transcription}
+
+La transcription a été réalisée à l’aide de la plateforme \textit{eScriptorium}. La première étape a consisté à segmenter chaque page en différentes zones, correspondant aux éléments distincts de la mise en page : titres, épîtres, blocs de texte en vers ou éléments décoratifs, cette segmentation permet de conserver une correspondance entre l’image et le texte transcrit.
+
+La transcription a ensuite été effectuée manuellement, en respectant autant que possible le texte original. L’orthographe ancienne a été conservée, de même que la ponctuation et certaines coupures de mots présentes dans l’édition.
+
+Plusieurs difficultés ont été rencontrées au cours du travail. Certaines lettres sont peu lisibles en raison de la qualité de l’impression ou de l’état du document.
+
+Au cours du projet, des difficultés ont été rencontrées lors de l’export des données depuis la plateforme \textit{eScriptorium}. En particulier, l’export global des transcriptions a échoué à plusieurs reprises en raison de limitations techniques liées à l’espace disque disponible sur le serveur, empêchant la génération d’archives complètes regroupant l’ensemble des pages transcrites. Même l’export page par page a parfois produit des erreurs, ce qui a nécessité une récupération manuelle des transcriptions sous forme de fichiers texte.
+
+Face à ces contraintes, les résultats du travail ont été organisés et déposés sur un dépôt GitHub dédié. Les transcriptions ont été nettoyées et structurées manuellement avant d’être intégrées au dépôt, accompagnées des images utilisées pour la transcription ainsi que d’un fichier \texttt{README} décrivant le corpus, la source du manuscrit et la méthodologie employée.
+
+\section{Présentation des documents transcrits}
+
+Les documents transcrits comprennent plusieurs pages représentatives de l’ouvrage. La page de titre permet de restituer les informations éditoriales essentielles et la hiérarchie visuelle du texte. Les épîtres rédigées en prose offrent un exemple intéressant de discours adressé qui est typique du contexte littéraire et social de l’époque.
+
+Les pages en vers mettent en évidence le caractère burlesque de l’œuvre, le ton satirique, les images et la structure sont particulièrement visibles dans ces passages. Chaque page a été transcrite séparément et exportée sous forme de fichiers texte, afin de faciliter leur consultation et leur réutilisation.
+
+\end{document}
